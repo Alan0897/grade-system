@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}首頁 - 成績系統{% endblock %}
+{% block header %}{% endblock %}
+{% block content %}
+  <section class="hero">
+    <div class="hero-inner">
+      <h1>歡迎使用 成績系統</h1>
+      <p class="lead">為學校管理課程、教師與學生成績提供簡潔直覺的操作介面。</p>
+      <div class="hero-ctas">
+        <a class="button" href="{% url 'course_list' %}">立即查看課程</a>
+        {% if not user.is_authenticated %}
+          <a class="button button-ghost" href="{% url 'register' %}">註冊學生帳號</a>
+        {% endif %}
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">{{ course_count }}</div>
+        <div class="stat-label">課程數</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">{{ student_count }}</div>
+        <div class="stat-label">學生數</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">{% if my_avg is not None %}{{ my_avg }}{% else %}—{% endif %}</div>
+        <div class="stat-label">我的平均</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <h2>功能重點</h2>
+    <div class="feature-grid">
+      <div class="card">
+        <h3>學生功能</h3>
+        <ul>
+          <li>註冊 / 登入</li>
+          <li>加選 / 退選課程</li>
+          <li>查詢課程分數與學期平均</li>
+          <li>編輯個人資訊與大頭貼</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>教師功能</h3>
+        <ul>
+          <li>由管理者在 Admin 建立教師帳號</li>
+          <li>教師可新增課程、查看學生名單與輸入期中期末成績</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>管理者</h3>
+        <ul>
+          <li>在 Admin 新增教師、指派課程教師</li>
+          <li>檢視修課紀錄與留言管理</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+{% endblock %}

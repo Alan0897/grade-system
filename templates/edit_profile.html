@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}編輯個人資訊 - 成績系統{% endblock %}
+{% block content %}
+  <h1>編輯個人資訊</h1>
+  <form method="post" enctype="multipart/form-data" class="form">
+      {% csrf_token %}
+      <div class="form-row">
+          <label>姓名：</label>
+          <input type="text" name="name" value="{{ name }}">
+      </div>
+      <div class="form-row">
+          <label>大頭貼：</label>
+          {% if avatar_url %}
+              <div>目前大頭貼：<img src="{{ avatar_url }}" alt="avatar" width="48" style="border-radius:6px"></div>
+          {% endif %}
+          <input type="file" name="avatar" accept="image/*">
+      </div>
+      <button class="button" type="submit">儲存</button>
+  </form>
+  <p><a href="{% url 'course_list' %}">返回課程列表</a></p>
+{% endblock %}

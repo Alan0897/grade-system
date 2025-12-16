@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}管理課程：{{ course.name }} - 成績系統{% endblock %}
+{% block content %}
+  <h1>管理課程：{{ course.name }}</h1>
+  <form method="post" class="form">
+      {% csrf_token %}
+      <table class="table">
+          <thead>
+              <tr>
+                  <th>學生</th>
+                  <th>期中</th>
+                  <th>期末</th>
+                  <th>平均</th>
+              </tr>
+          </thead>
+          <tbody>
+          {% for e in enrollments %}
+          <tr>
+              <td>
+                {% load profile_extras %}
+                {% student_avatar e.student as avatar_url %}
+                <img src="{{ avatar_url }}" class="avatar-sm" alt="avatar"> {{ e.student.name }}
+              </td>
+              <td><input type="text" name="mid_{{ e.id }}" value="{{ e.midterm_score }}"></td>
+              <td><input type="text" name="final_{{ e.id }}" value="{{ e.final_score }}"></td>
+              <td>{{ e.average }}</td>
+          </tr>
+          {% endfor %}
+          </tbody>
+      </table>
+      <button class="button btn-icon" type="submit"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12h14" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 5v14" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>儲存成績</button>
+  </form>
+  <p><a href="{% url 'course_detail' course.id %}">返回課程</a></p>
+{% endblock %}
