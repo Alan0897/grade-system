@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block title %}{{ course.name }} - 課程資料{% endblock %}
+{% block content %}
+  <div class="compact">
+    <div class="card">
+    <h1>{{ course.name }} 課程資料</h1>
+    <p><strong>課號：</strong>{{ course.course_code }}</p>
+    <p><strong>任課老師：</strong>{% if course.teacher_user %}{{ course.teacher_user.get_full_name|default:course.teacher_user.username }}{% else %}{{ course.teacher }}{% endif %}</p>
+
+  <h2>成績</h2>
+    <table class="table">
+    <thead>
+      <tr>
+        <th>學生</th>
+        <th>期中</th>
+        <th>期末</th>
+        <th>平均</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% load profile_extras %}
+      {% for e in enrollments %}
+      <tr>
+        <td>{{ e.student.name }}</td>
+        {# show scores only to course teacher, staff, or the student themself #}
+        {% if is_course_teacher or is_staff %}
+            <td>{{ e.midterm_score }}</td>
+            <td>{{ e.final_score }}</td>
+            <td>{{ e.average }}</td>
+        {% elif current_student %}
+            {% if e.student.id == current_student.id %}
+                <td>{{ e.midterm_score }}</td>
+                <td>{{ e.final_score }}</td>
+                <td>{{ e.average }}</td>
+            {% else %}
+                <td>—</td>
+                <td>—</td>
+                <td>—</td>
+            {% endif %}
+        {% else %}
+            <td>—</td>
+            <td>—</td>
+            <td>—</td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="actions" style="margin-top:8px;display:flex;gap:10px;align-items:center;">
+    <a class="button btn-icon" href="{% url 'course_list' %}"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 18l-6-6 6-6" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>返回課程列表</a>
+    {% if user.is_authenticated and user.profile.role == 'teacher' and course.teacher_user == user %}
+      <a class="button btn-icon" href="{% url 'teacher_manage_course' course.id %}"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 12h14" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>管理此課程學生與成績</a>
+    {% endif %}
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <h2>課程留言</h2>
+    <form method="post" class="form">
+      {% csrf_token %}
+      <div class="form-row">
+          <textarea name="comment" rows="2" placeholder="輸入留言..."></textarea>
+      </div>
+      <button class="button" type="submit">留言</button>
+    </form>
+
+    <ul style="margin-top:12px">
+      {% for c in comments %}
+      <li>
+          <strong>{{ c.author.username }}</strong> ({{ c.created_at }}): {{ c.content }}
+          {% if c.author == user %} - <a href="{% url 'edit_comment' c.id %}">編輯</a>{% endif %}
+      </li>
+      {% empty %}
+      <li>尚無留言</li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}

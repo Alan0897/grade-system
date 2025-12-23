@@ -1,0 +1,15 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+  <h1>新增教師帳號</h1>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label>帳號：</label><input type="text" name="username" required><br>
+    <label>密碼：</label><input type="password" name="password" required><br>
+    <label>姓名：</label><input type="text" name="first_name"><br>
+    <label>電子信箱：</label><input type="email" name="email"><br>
+    <label>大頭貼：</label><input type="file" name="avatar" accept="image/*"><br>
+    <button type="submit">建立教師</button>
+  </form>
+  <p><a href="{% url 'admin:auth_user_changelist' %}">回到使用者列表</a></p>
+{% endblock %}

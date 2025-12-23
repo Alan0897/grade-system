@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}成績系統{% endblock %}
+{% block content %}
+
+<div class="card">
+  <table class="table">
+  <tbody>
+    {% for e in enrollments %}
+    <tr>
+      <td>
+        <a href="{% url 'course_detail' e.course.id %}">
+          {{ e.course.name }}
+        </a>
+      </td>
+      <td>{{ e.midterm_score }}</td>
+      <td>{{ e.final_score }}</td>
+      <td>{{ e.average }}</td>
+      <td>
+        <a class="button btn-icon"
+           data-confirm="確定要退選這門課嗎？"
+           href="{% url 'drop_course' e.course.id %}">
+          <svg viewBox="0 0 24 24" fill="none"
+               xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 7h12" stroke="#fff" stroke-width="1.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M9 7v10a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2V7"
+                  stroke="#fff" stroke-width="1.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+  </table>
+</div>
+
+{% if is_teacher %}
+  <div class="card" style="margin-top:10px">
+    <form method="post" action="{% url 'add_course' %}" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+      {% csrf_token %}
+      <input type="text" name="name" placeholder="課名" required style="flex:1;min-width:160px;padding:8px;border-radius:6px;border:1px solid #e6eefb">
+      <input type="text" name="course_code" placeholder="課號" required style="width:120px;padding:8px;border-radius:6px;border:1px solid #e6eefb">
+      <button class="button" type="submit">新增課程</button>
+    </form>
+  </div>
+
+  <div class="card" style="margin-top:10px">
+    <ul>
+    {% for c in teaching_courses %}
+      <li>
+        <strong>{{ c.name }}</strong>
+        <a href="{% url 'teacher_manage_course' c.id %}">
+          管理
+        </a>
+        <small>{{ c.enrollment_set.count }}</small>
+      </li>
+    {% endfor %}
+    </ul>
+  </div>
+{% endif %}
+
+{% if is_student %}
+  <div class="card" style="margin-top:10px">
+    <ul>
+    {% for course in courses %}
+      <li>
+        <strong>{{ course.name }}</strong>
+        <a class="button" href="{% url 'enroll_course' course.id %}">
+          加選
+        </a>
+      </li>
+    {% endfor %}
+    </ul>
+  </div>
+{% endif %}
+
+{% endblock %}

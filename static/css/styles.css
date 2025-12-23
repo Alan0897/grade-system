@@ -1,0 +1,143 @@
+/* 基本設定 */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  background: radial-gradient(1200px 600px at 10% 10%, rgba(78,161,255,0.06), transparent 12%),
+              radial-gradient(900px 400px at 90% 90%, rgba(78,161,255,0.03), transparent 14%),
+              linear-gradient(180deg, #f7f8fb 0%, #f3f5f8 100%);
+  color: #1f2933;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.45;
+}
+
+/* 版面 */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 8px 12px;
+}
+
+/* Header & Navigation */
+.site-header {
+  background: #111;
+  color: #fff;
+  padding: 4px 0;
+}
+
+.nav {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.user-area {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.username {
+  font-size: 13px;
+}
+
+/* =========================================
+   頭像核心設定 (強制修正超大圖片問題)
+   ========================================= */
+.avatar {
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  max-width: 32px !important;
+  min-height: 32px !important;
+  max-height: 32px !important;
+  flex: 0 0 32px !important; /* 防止在 flex 佈局中被拉伸 */
+  flex-shrink: 0 !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  display: inline-block !important;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  vertical-align: middle;
+}
+
+/* 確保 Header 內的頭像權重最高 */
+.site-header .user-area img.avatar {
+  width: 32px !important;
+  height: 32px !important;
+}
+
+.avatar-sm {
+  width: 20px !important;
+  height: 20px !important;
+  min-width: 20px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+}
+
+.avatar-lg {
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+  border-radius: 8px !important;
+  object-fit: cover !important;
+}
+
+/* --- 防止圖片撐爆版面的全域設定 --- */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* --- 元件與其他樣式 --- */
+.card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 6px 16px rgba(15,23,42,0.04);
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: linear-gradient(180deg,#2f8fff,#1671d9);
+  color: #fff !important;
+  text-decoration: none;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+}
+
+a {
+  color: #4ea1ff;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* 列表與間距壓縮 */
+.compact .card { padding: 8px; margin-bottom: 8px; }
+h1, h2, h3, p, ul, table { margin-top: 4px; margin-bottom: 4px; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.site-footer {
+  background: #111;
+  color: #aaa;
+  font-size: 12px;
+  text-align: center;
+  padding: 10px 0;
+}
