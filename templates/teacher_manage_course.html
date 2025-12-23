@@ -1,11 +1,18 @@
 {% extends 'base.html' %}
 {% block title %}管理課程：{{ course.name }} - 成績系統{% endblock %}
 {% block content %}
+<<<<<<< HEAD
     <div class="card">
         <h1>管理課程：{{ course.name }}</h1>
         <form method="post" class="form">
             {% csrf_token %}
             <table class="table">
+=======
+  <h1>管理課程：{{ course.name }}</h1>
+  <form method="post" class="form">
+      {% csrf_token %}
+      <table class="table">
+>>>>>>> a9472c182bb70583b37e87c625c6c866550bc264
           <thead>
               <tr>
                   <th>學生</th>
@@ -28,6 +35,7 @@
           </tr>
           {% endfor %}
           </tbody>
+<<<<<<< HEAD
             </table>
             <button class="button btn-icon" type="submit"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12h14" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 5v14" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>儲存成績</button>
         </form>
@@ -55,4 +63,10 @@
                 </ul>
                 <p style="margin-top:10px"><a href="{% url 'course_list' %}">返回課程列表</a></p>
             </div>
+=======
+      </table>
+      <button class="button btn-icon" type="submit"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12h14" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 5v14" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>儲存成績</button>
+  </form>
+  <p><a href="{% url 'course_detail' course.id %}">返回課程</a></p>
+>>>>>>> a9472c182bb70583b37e87c625c6c866550bc264
 {% endblock %}

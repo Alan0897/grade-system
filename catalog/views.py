@@ -151,17 +151,25 @@ def course_list(request):
 @login_required
 def course_detail(request, pk):
     course = get_object_or_404(Course, pk=pk)
+<<<<<<< HEAD
     # By default teacher/staff see all enrollments; students should only see their own
     current_student = get_current_student(request)
     if hasattr(request.user, 'profile') and getattr(request.user.profile, 'role', None) == 'student' and current_student:
         enrollments = Enrollment.objects.filter(course=course, student=current_student)
     else:
         enrollments = Enrollment.objects.filter(course=course)
+=======
+    enrollments = Enrollment.objects.filter(course=course)
+>>>>>>> a9472c182bb70583b37e87c625c6c866550bc264
     comments = course.comments.select_related('author').order_by('-created_at')
 
     # determine permissions: teacher of this course or staff can see all scores
     is_course_teacher = hasattr(request.user, 'profile') and request.user.profile.role == 'teacher' and course.teacher_user == request.user
     is_staff = request.user.is_staff
+<<<<<<< HEAD
+=======
+    current_student = get_current_student(request)
+>>>>>>> a9472c182bb70583b37e87c625c6c866550bc264
 
     if request.method == 'POST' and request.POST.get('comment'):
         Comment.objects.create(course=course, author=request.user, content=request.POST.get('comment'))
@@ -229,6 +237,7 @@ def teacher_manage_course(request, course_id):
         return redirect('course_detail', pk=course_id)
 
     enrollments = Enrollment.objects.filter(course=course)
+<<<<<<< HEAD
     comments = course.comments.select_related('author').order_by('-created_at')
 
     if request.method == 'POST':
@@ -238,6 +247,10 @@ def teacher_manage_course(request, course_id):
             return redirect('teacher_manage_course', course_id=course_id)
 
         # Otherwise expect grade fields mid_{enrollment_id}, final_{enrollment_id}
+=======
+    if request.method == 'POST':
+        # 期待欄位格式 mid_{enrollment_id}, final_{enrollment_id}
+>>>>>>> a9472c182bb70583b37e87c625c6c866550bc264
         for e in enrollments:
             mid = request.POST.get(f'mid_{e.id}')
             final = request.POST.get(f'final_{e.id}')
@@ -257,7 +270,10 @@ def teacher_manage_course(request, course_id):
     return render(request, 'teacher_manage_course.html', {
         'course': course,
         'enrollments': enrollments,
+<<<<<<< HEAD
         'comments': comments,
+=======
+>>>>>>> a9472c182bb70583b37e87c625c6c866550bc264
     })
 
 
@@ -270,9 +286,12 @@ def edit_comment(request, comment_id):
     if request.method == 'POST':
         comment.content = request.POST.get('content')
         comment.save()
+<<<<<<< HEAD
         # If current user is the course teacher, return to teacher manage page
         course = comment.course
         if hasattr(request.user, 'profile') and request.user.profile.role == 'teacher' and course.teacher_user == request.user:
             return redirect('teacher_manage_course', course_id=course.id)
+=======
+>>>>>>> a9472c182bb70583b37e87c625c6c866550bc264
         return redirect('course_detail', pk=comment.course.id)
     return render(request, 'edit_comment.html', {'comment': comment})

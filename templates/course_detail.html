@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}{{ course.name }} - 課程資料{% endblock %}
 {% block content %}
+<<<<<<< HEAD
   <div class="compact">
     <div class="card">
     <h1>{{ course.name }} 課程資料</h1>
@@ -9,6 +10,14 @@
 
   <h2>成績</h2>
     <table class="table">
+=======
+  <h1>{{ course.name }} 課程資料</h1>
+  <p><strong>課號：</strong>{{ course.course_code }}</p>
+  <p><strong>任課老師：</strong>{% if course.teacher_user %}{{ course.teacher_user.get_full_name|default:course.teacher_user.username }}{% else %}{{ course.teacher }}{% endif %}</p>
+
+  <h2>修課學生名單</h2>
+  <table class="table">
+>>>>>>> a9472c182bb70583b37e87c625c6c866550bc264
     <thead>
       <tr>
         <th>學生</th>
@@ -21,7 +30,14 @@
       {% load profile_extras %}
       {% for e in enrollments %}
       <tr>
+<<<<<<< HEAD
         <td>{{ e.student.name }}</td>
+=======
+        <td>
+          {% student_avatar e.student as avatar_url %}
+          <img src="{{ avatar_url }}" class="avatar-sm" alt="avatar"> {{ e.student.name }}
+        </td>
+>>>>>>> a9472c182bb70583b37e87c625c6c866550bc264
         {# show scores only to course teacher, staff, or the student themself #}
         {% if is_course_teacher or is_staff %}
             <td>{{ e.midterm_score }}</td>
@@ -45,6 +61,7 @@
       </tr>
       {% endfor %}
     </tbody>
+<<<<<<< HEAD
     </table>
     </div>
   </div>
@@ -67,6 +84,27 @@
     </form>
 
     <ul style="margin-top:12px">
+=======
+  </table>
+
+  <p>
+      <a class="button btn-icon" href="{% url 'course_list' %}"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 18l-6-6 6-6" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>返回課程列表</a>
+      {% if user.is_authenticated and user.profile.role == 'teacher' and course.teacher_user == user %}
+          <a class="button btn-icon" href="{% url 'teacher_manage_course' course.id %}"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 12h14" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>管理此課程學生與成績</a>
+      {% endif %}
+  </p>
+
+  <h2>課程留言</h2>
+  <form method="post" class="form">
+      {% csrf_token %}
+      <div class="form-row">
+          <textarea name="comment" rows="3" placeholder="輸入留言..."></textarea>
+      </div>
+      <button class="button" type="submit">留言</button>
+  </form>
+
+  <ul>
+>>>>>>> a9472c182bb70583b37e87c625c6c866550bc264
       {% for c in comments %}
       <li>
           <strong>{{ c.author.username }}</strong> ({{ c.created_at }}): {{ c.content }}
@@ -75,6 +113,10 @@
       {% empty %}
       <li>尚無留言</li>
       {% endfor %}
+<<<<<<< HEAD
     </ul>
   </div>
+=======
+  </ul>
+>>>>>>> a9472c182bb70583b37e87c625c6c866550bc264
 {% endblock %}

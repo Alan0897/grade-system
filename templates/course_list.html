@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+<<<<<<< HEAD
 {% block title %}成績系統{% endblock %}
 {% block content %}
 
@@ -75,4 +76,69 @@
   </div>
 {% endif %}
 
+=======
+{% block title %}我的課程 - 成績系統{% endblock %}
+{% block content %}
+  <h1>我的課程列表</h1>
+
+  <!-- 已選課程 -->
+  <table class="table">
+      <thead>
+        <tr>
+          <th>課名</th>
+          <th>期中</th>
+          <th>期末</th>
+          <th>平均</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for e in enrollments %}
+      <tr>
+          <td><a href="{% url 'course_detail' e.course.id %}">{{ e.course.name }}</a></td>
+          <td>{{ e.midterm_score }}</td>
+          <td>{{ e.final_score }}</td>
+          <td>{{ e.average }}</td>
+          <td><a class="button btn-icon" data-confirm="確定要退選這門課嗎？" href="{% url 'drop_course' e.course.id %}"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 7h12" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 7v10a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2V7" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>退選</a></td>
+      </tr>
+      {% empty %}
+      <tr>
+          <td colspan="5">尚未選課</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+  </table>
+
+  <p class="muted">平均分數：<strong>{{ avg_score }}</strong></p>
+
+  {% if is_teacher %}
+    <p><a class="button btn-icon" href="{% url 'add_course' %}"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 12h14" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>新增課程</a></p>
+
+    <h2>我開的課程</h2>
+    <ul>
+      {% for c in teaching_courses %}
+        <li>
+          <strong>{{ c.name }}</strong> ({{ c.course_code }}) - <a href="{% url 'teacher_manage_course' c.id %}">管理學生與成績</a>
+          <small>（學生人數：{{ c.enrollment_set.count }})</small>
+        </li>
+      {% empty %}
+        <li>尚未開課</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+{% if is_student %}
+  <h2>可加選課程</h2>
+  <ul>
+    {% for course in courses %}
+      <li>
+        <strong>{{ course.name }}</strong> ({{ course.course_code }}) - 任課老師：{% if course.teacher_user %}{{ course.teacher_user.get_full_name|default:course.teacher_user.username }}{% else %}{{ course.teacher }}{% endif %}
+        <a class="button" href="{% url 'enroll_course' course.id %}">加選</a>
+      </li>
+    {% empty %}
+      <li>沒有可加選的課程</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+>>>>>>> a9472c182bb70583b37e87c625c6c866550bc264
 {% endblock %}

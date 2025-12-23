@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* 基本設定 */
 * {
   box-sizing: border-box;
@@ -141,3 +142,86 @@ table {
   text-align: center;
   padding: 10px 0;
 }
+=======
+/* Theme variables */
+:root{
+  --accent:#0b5fff;
+  --muted:#6b7b8c;
+  --bg:#f7f9fb;
+  --card:#ffffff;
+  --border:#e6eef8;
+}
+
+/* Base */
+body{font-family:Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans TC', Arial; background:var(--bg);color:#222;margin:0;line-height:1.5}
+.container{max-width:1100px;margin:28px auto;padding:0 16px}
+.site-header{background:var(--card);border-bottom:1px solid var(--border);box-shadow:0 1px 3px rgba(15,30,45,0.03)}
+.site-header .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+.brand a{font-weight:800;color:var(--accent);text-decoration:none;font-size:20px}
+.nav-links a{margin-right:16px;color:#222;text-decoration:none;font-weight:600}
+.nav-links a:hover{color:var(--accent)}
+.user-area{font-size:14px}
+.user-area a{color:var(--accent);text-decoration:none;margin-left:8px}
+.avatar-sm{width:28px;height:28px;border-radius:50%;vertical-align:middle;margin-right:8px;object-fit:cover}
+.avatar-md{width:48px;height:48px;border-radius:8px;object-fit:cover}
+
+h1{color:#0b3b7a}
+h2{color:#0b3b7a;margin-top:12px}
+
+/* Tables */
+.table{width:100%;border-collapse:collapse;background:var(--card);border-radius:8px;overflow:hidden;box-shadow:0 6px 18px rgba(12,30,76,0.04)}
+.table th,.table td{border-bottom:1px solid #f1f6fb;padding:12px;text-align:left}
+.table thead th{background:linear-gradient(180deg,#fbfdff,#f7fbff);font-weight:700}
+.table tbody tr:hover{background:#fbfdff}
+
+/* Buttons */
+.button{display:inline-block;background:var(--accent);color:#fff;padding:8px 14px;border-radius:8px;text-decoration:none;border:none;cursor:pointer;transition:all .15s ease}
+.button:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(11,91,255,0.12)}
+.button-ghost{background:transparent;color:var(--accent);border:1px solid var(--border)}
+.muted{color:var(--muted)}
+
+/* Forms */
+.form{background:var(--card);padding:14px;border-radius:8px;border:1px solid var(--border);box-shadow:0 6px 18px rgba(12,30,76,0.03)}
+.form-row{margin-bottom:12px}
+.form-row label{display:block;margin-bottom:6px;font-weight:700;color:#233245}
+input[type=text],input[type=password],input[type=file],textarea{width:100%;padding:10px;border:1px solid #e8eef8;border-radius:8px;background:#fff}
+
+.messages{list-style:none;padding:0;margin:12px 0}
+.message{padding:10px;border-radius:8px;margin-bottom:10px}
+.message.success{background:#e6fbf0;border:1px solid #c6f0d6}
+.message.error{background:#fff1f0;border:1px solid #f7c6c6}
+
+.site-footer{background:var(--card);border-top:1px solid var(--border);padding:14px 0;margin-top:28px;text-align:center;color:#666}
+
+/* Hero */
+.hero{display:flex;align-items:center;justify-content:space-between;gap:24px;background:linear-gradient(120deg,#f3f8ff,#ffffff);padding:28px;border-radius:12px;margin-bottom:20px}
+.hero-inner{flex:1}
+.hero h1{font-size:30px;margin:0 0 8px}
+.hero .lead{color:var(--muted);font-size:15px;margin-bottom:12px}
+.hero-ctas .button{margin-right:8px}
+.hero-stats{display:flex;gap:12px}
+.hero-stats .stat{background:var(--card);padding:12px;border-radius:8px;min-width:110px;text-align:center;border:1px solid var(--border);box-shadow:0 6px 18px rgba(12,30,76,0.03)}
+.stat-num{font-size:20px;color:var(--accent);font-weight:800}
+.stat-label{font-size:12px;color:var(--muted)}
+
+/* Features */
+.features{margin-top:18px}
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:12px}
+.card{background:var(--card);padding:18px;border-radius:10px;border:1px solid var(--border);box-shadow:0 6px 18px rgba(12,30,76,0.03)}
+.card h3{margin-top:0;color:#0b3b7a}
+.card ul{margin:8px 0 0;padding-left:18px}
+
+@media (max-width:900px){.feature-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:600px){.feature-grid{grid-template-columns:1fr}.hero{flex-direction:column;align-items:flex-start}.hero-stats{width:100%;justify-content:space-between}.nav-links{display:none}.nav-links.open{display:block;margin-top:8px}
+  .nav-toggle{display:inline-block;background:transparent;border:0;font-size:20px}
+} 
+
+/* Desktop hide nav-toggle */
+.nav-toggle{display:none}
+
+/* Button icon spacing */
+.btn-icon{display:inline-flex;align-items:center;gap:8px} 
+.btn-icon svg{width:16px;height:16px;vertical-align:middle}
+
+
+>>>>>>> a9472c182bb70583b37e87c625c6c866550bc264

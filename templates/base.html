@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}成績系統{% endblock %}</title>
+<<<<<<< HEAD
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -63,3 +64,47 @@
 <script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>
+=======
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+  {% block header %}
+  <header class="site-header">
+    <div class="container nav">
+      <div class="user-area">
+        {% if user.is_authenticated %}
+          {% if user.profile.avatar %}
+            <img class="avatar-sm" src="{{ user.profile.avatar.url }}" alt="avatar">
+          {% else %}
+            <img class="avatar-sm" src="{{ MEDIA_URL }}avatars/red.avif" alt="avatar">
+          {% endif %}
+          <span class="username">{{ user.username }}</span>
+          <a href="{% url 'edit_profile' %}">編輯</a> |
+          <a href="{% url 'logout' %}">登出</a>
+        {% endif %}
+      </div>
+    </div>
+  </header>
+  {% endblock %}
+  <main class="container">
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <li class="message {{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">&copy; {{ now|date:"Y" }} Grade System</div>
+  </footer>
+  <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
+>>>>>>> a9472c182bb70583b37e87c625c6c866550bc264
