@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block title %}管理課程：{{ course.name }} - 成績系統{% endblock %}
+{% block content %}
+<div class="card">
+    <h1>管理課程：{{ course.name }}</h1>
+    <form method="post" class="form">
+        {% csrf_token %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>學生</th>
+                    <th>期中</th>
+                    <th>期末</th>
+                    <th>平均</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% load profile_extras %}
+                {% for e in enrollments %}
+                <tr>
+                    <td>
+                        {% student_avatar e.student as avatar_url %}
+                        <img src="{{ avatar_url }}" class="avatar-sm" alt="avatar" style="width:24px; border-radius:50%;"> 
+                        {{ e.student.name }}
+                    </td>
+                    <td><input type="number" step="0.1" name="mid_{{ e.id }}" value="{{ e.midterm_score|default:'' }}" style="width:60px;"></td>
+                    <td><input type="number" step="0.1" name="final_{{ e.id }}" value="{{ e.final_score|default:'' }}" style="width:60px;"></td>
+                    <td>{{ e.average }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button class="button btn-icon" type="submit">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:16px;">
+                <path d="M5 12h14" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 5v14" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            儲存成績
+        </button>
+    </form>
+</div>
+
+<div class="card" style="margin-top:12px">
+    <h2>留言板</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-row">
+            <textarea name="comment" rows="3" placeholder="輸入留言..." style="width:100%; border-radius:6px; border:1px solid #ddd;"></textarea>
+        </div>
+        <button class="button" type="submit">發佈留言</button>
+    </form>
+
+    <ul style="margin-top:12px; list-style:none; padding:0;">
+        {% for c in comments %}
+            <li style="padding:8px 0; border-bottom:1px solid #eee;">
+                <strong>{{ c.author.username }}</strong> 
+                <small class="muted">({{ c.created_at|date:"Y-m-d H:i" }})</small>: 
+                {{ c.content }}
+                {% if c.author == user %} - <a href="{% url 'edit_comment' c.id %}">編輯</a>{% endif %}
+            </li>
+        {% empty %}
+            <li>尚無留言</li>
+        {% endfor %}
+    </ul>
+    <p style="margin-top:10px">
+        <a href="{% url 'course_detail' course.id %}">查看課程頁面</a> | 
+        <a href="{% url 'course_list' %}">返回課程列表</a>
+    </p>
+</div>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}成績系統{% endblock %}</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+
+<body>
+
+{% block header %}
+<header class="site-header">
+  <div class="container">
+    <nav class="nav">
+      <div class="brand">
+        <a href="{% url 'index' %}">📚 成績系統</a>
+      </div>
+      <div class="nav-links">
+        {% if user.is_authenticated %}
+          <a href="{% url 'course_list' %}">課程</a>
+          {% if user.profile.role == 'teacher' %}
+            <a href="#">教師管理</a>
+          {% endif %}
+        {% endif %}
+      </div>
+      <div class="user-area">
+        {% if user.is_authenticated %}
+          {% if user.profile.avatar %}
+            <img class="avatar" src="{{ user.profile.avatar.url }}" alt="avatar">
+          {% else %}
+            <img class="avatar" src="{{ MEDIA_URL }}avatars/red.avif" alt="avatar">
+          {% endif %}
+          <span>{{ user.username }}</span>
+          <a href="{% url 'edit_profile' %}">編輯</a>
+          <a href="{% url 'logout' %}">登出</a>
+        {% else %}
+          <a href="{% url 'login' %}">登入</a>
+          <a href="{% url 'register' %}">註冊</a>
+        {% endif %}
+      </div>
+    </nav>
+  </div>
+</header>
+{% endblock %}
+
+<main class="container">
+  {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+        <li class="message {{ message.tags }}">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>&copy; {% now "Y" %} 成績系統 — 專業成績管理平台</p>
+    <p style="font-size: 12px; color: #9ca3af; margin-top: 8px;">
+      <a href="#">說明文件</a> | <a href="#">聯絡我們</a> | <a href="#">隱私政策</a>
+    </p>
+  </div>
+</footer>
+
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

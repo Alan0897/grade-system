@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% block title %}我的課程 - 成績系統{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+  <h1>我的課程</h1>
+  {% if avg_score %}
+  <div class="stat" style="width: 200px;">
+    <div class="stat-num">{{ avg_score }}</div>
+    <div class="stat-label">學期總平均</div>
+  </div>
+  {% endif %}
+</div>
+
+{% if enrollments %}
+<div class="card">
+  <h2 style="margin-top: 0;">已選課程</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>課程名稱</th>
+        <th style="text-align: center;">期中成績</th>
+        <th style="text-align: center;">期末成績</th>
+        <th style="text-align: center;">平均分數</th>
+        <th style="text-align: center;">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for e in enrollments %}
+      <tr>
+        <td>
+          <strong><a href="{% url 'course_detail' e.course.id %}">{{ e.course.name }}</a></strong>
+          <br><small style="color: #9ca3af;">{{ e.course.course_code }}</small>
+        </td>
+        <td style="text-align: center;">
+          {% if e.midterm_score %}{{ e.midterm_score }}{% else %}<span style="color: #d1d5db;">—</span>{% endif %}
+        </td>
+        <td style="text-align: center;">
+          {% if e.final_score %}{{ e.final_score }}{% else %}<span style="color: #d1d5db;">—</span>{% endif %}
+        </td>
+        <td style="text-align: center;">
+          <strong style="color: var(--accent);">{{ e.average }}</strong>
+        </td>
+        <td style="text-align: center;">
+          <a class="button secondary btn-icon" onclick="return confirm('確定要退選這門課嗎？')" href="{% url 'drop_course' e.course.id %}">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:14px;">
+              <path d="M6 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M9 7v10a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2V7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            退選
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="card" style="text-align: center; padding: 40px;">
+  <p style="color: #9ca3af; font-size: 16px;">👋 你尚未選課，開始<a href="{% url 'index' %}">探索課程</a>吧！</p>
+</div>
+{% endif %}
+
+{% if is_teacher %}
+  <h2>🎓 我開設的課程</h2>
+  {% if teaching_courses %}
+  <div class="card">
+    <div style="display: grid; gap: 12px;">
+    {% for c in teaching_courses %}
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #f3f4f6;">
+        <div>
+          <h3 style="margin: 0 0 4px 0;">{{ c.name }}</h3>
+          <small style="color: #9ca3af;">課號：{{ c.course_code }} • 選課人數：{{ c.enrollment_set.count }}</small>
+        </div>
+        <a href="{% url 'teacher_manage_course' c.id %}" class="button btn-icon">
+          ⚙️ 管理成績
+        </a>
+      </div>
+    {% endfor %}
+    </div>
+  </div>
+  {% else %}
+  <div class="card" style="text-align: center; padding: 30px;">
+    <p style="color: #9ca3af;">尚未開課</p>
+  </div>
+  {% endif %}
+
+  <h2>➕ 新增課程</h2>
+  <div class="card">
+    <form method="post" action="{% url 'add_course' %}">
+      {% csrf_token %}
+      <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+        <input type="text" name="name" placeholder="課程名稱" required style="flex: 1; min-width: 200px;">
+        <input type="text" name="course_code" placeholder="課號" required style="width: 120px;">
+        <button class="button" type="submit">新增</button>
+      </div>
+    </form>
+  </div>
+{% endif %}
+
+{% if is_student %}
+  <h2>🔍 可加選課程</h2>
+  {% if courses %}
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
+    {% for course in courses %}
+    <div class="card">
+      <h3 style="margin-top: 0;">{{ course.name }}</h3>
+      <p style="color: #9ca3af; margin: 4px 0;">
+        <strong>課號：</strong>{{ course.course_code }}
+      </p>
+      <p style="color: #9ca3af; margin: 4px 0;">
+        <strong>教師：</strong>{% if course.teacher_user %}{{ course.teacher_user.get_full_name|default:course.teacher_user.username }}{% else %}{{ course.teacher }}{% endif %}
+      </p>
+      <a class="button" href="{% url 'enroll_course' course.id %}" style="margin-top: 12px; width: 100%;">
+        加選課程
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="card" style="text-align: center; padding: 40px;">
+    <p style="color: #9ca3af;">目前沒有可加選的課程</p>
+  </div>
+  {% endif %}
+{% endif %}
+
+{% endblock %}

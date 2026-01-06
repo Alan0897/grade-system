@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}首頁 - 成績系統{% endblock %}
+
+{% block content %}
+  <section class="card hero">
+    <div class="hero-inner">
+      <h1>歡迎使用成績系統</h1>
+      <p class="lead">為學校管理課程、教師與學生成績提供簡潔直覺的操作介面。一站式完成選課、查詢成績與師生互動。</p>
+      <div class="hero-ctas">
+        {% if user.is_authenticated %}
+          <a class="button" href="{% url 'course_list' %}">🎓 查看我的課程</a>
+        {% else %}
+          <a class="button" href="{% url 'login' %}">立即登入</a>
+          <a class="button ghost" href="{% url 'register' %}">註冊新帳號</a>
+        {% endif %}
+      </div>
+    </div>
+
+    {# hero-stats 已移除，按使用者需求不顯示數字統計 #}
+  </section>
+{% endblock %}
